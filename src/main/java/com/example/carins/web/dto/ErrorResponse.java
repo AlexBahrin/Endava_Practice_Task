@@ -1,8 +1,14 @@
 package com.example.carins.web.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Error response data")
 public class ErrorResponse {
+    @Schema(description = "Error message", example = "Car not found")
     private String message;
+    @Schema(description = "Field that caused the error", example = "description")
     private String field;
+    @Schema(description = "HTTP status code", example = "404")
     private int status;
 
     public ErrorResponse() {}

@@ -1,10 +1,13 @@
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/CarInsuranceApplication.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/config/OpenApiConfig.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/model/Car.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/model/Claim.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/model/History.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/model/InsurancePolicy.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/model/Owner.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/CarRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/ClaimRepository.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/HistoryRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/InsurancePolicyRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/OwnerRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/service/CarService.java
@@ -13,4 +16,5 @@
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/CarDto.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/ClaimDto.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/ErrorResponse.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/HistoryDto.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/InsurancePolicyDto.java
