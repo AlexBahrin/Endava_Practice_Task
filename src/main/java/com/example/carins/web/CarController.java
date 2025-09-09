@@ -30,6 +30,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -50,14 +51,38 @@ public class CarController {
     }
 
     @Operation(summary = "Check insurance validity")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Insurance validity checked successfully"),
+        @ApiResponse(responseCode = "404", description = "Car not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid date format",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/cars/{carId}/insurance-valid")
     public ResponseEntity<?> isInsuranceValid(
             @Parameter(description = "Car ID") @PathVariable Long carId, 
             @Parameter(description = "Date (YYYY-MM-DD)") @RequestParam String date) {
-        // TODO: validate date format and handle errors consistently
-        LocalDate d = LocalDate.parse(date);
-        boolean valid = service.isInsuranceValid(carId, d);
-        return ResponseEntity.ok(new InsuranceValidityResponse(carId, d.toString(), valid));
+        try {
+            LocalDate d = LocalDate.parse(date);
+            
+            LocalDate now = LocalDate.now();
+            LocalDate minDate = now.minusYears(2);
+            LocalDate maxDate = now.plusYears(2);
+            
+            if (d.isBefore(minDate) || d.isAfter(maxDate)) {
+                ErrorResponse error = new ErrorResponse("Date out of range", 400);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            }
+            
+            boolean valid = service.isInsuranceValid(carId, d);
+            return ResponseEntity.ok(new InsuranceValidityResponse(carId, d.toString(), valid));
+        } catch (DateTimeParseException e) {
+            ErrorResponse error = new ErrorResponse("", 400);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (IllegalArgumentException e) {
+            ErrorResponse error = new ErrorResponse("Car not found", 404);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
     }
 
     @Operation(summary = "Register insurance claim")
