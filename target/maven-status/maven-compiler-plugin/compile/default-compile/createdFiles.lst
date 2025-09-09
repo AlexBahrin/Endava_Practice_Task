@@ -1,10 +1,14 @@
 com/example/carins/repo/InsurancePolicyRepository.class
 com/example/carins/web/InsurancePolicyController.class
+com/example/carins/web/CarController$ClaimRequest.class
 com/example/carins/model/Car.class
 com/example/carins/repo/CarRepository.class
 com/example/carins/web/dto/ErrorResponse.class
 com/example/carins/model/InsurancePolicy.class
+com/example/carins/web/dto/ClaimDto.class
 com/example/carins/web/CarController$InsuranceValidityResponse.class
+com/example/carins/model/Claim.class
+com/example/carins/repo/ClaimRepository.class
 com/example/carins/service/CarService.class
 com/example/carins/model/Owner.class
 com/example/carins/web/dto/CarDto.class
