@@ -29,6 +29,8 @@ public class InsurancePolicyController {
             request.getEndDate()
         );
 
+        // TODO: Implement actual logic for creating an insurance policy
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -50,6 +52,8 @@ public class InsurancePolicyController {
             request.getStartDate(),
             request.getEndDate()
         );
+
+        //TODO: Implement actual logic for updating an insurance policy
 
         return ResponseEntity.ok(response);
     }

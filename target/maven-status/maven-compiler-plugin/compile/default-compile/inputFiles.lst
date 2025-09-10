@@ -11,6 +11,7 @@
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/InsurancePolicyRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/OwnerRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/service/CarService.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/service/PolicyExpirationScheduler.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/CarController.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/InsurancePolicyController.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/CarDto.java

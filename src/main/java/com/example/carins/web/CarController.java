@@ -61,7 +61,8 @@ public class CarController {
     @GetMapping("/cars/{carId}/insurance-valid")
     public ResponseEntity<?> isInsuranceValid(
             @Parameter(description = "Car ID") @PathVariable Long carId, 
-            @Parameter(description = "Date (YYYY-MM-DD)") @RequestParam String date) {
+            @Parameter(description = "Date (YYYY-MM-DD)") @RequestParam String date) 
+    {
         try {
             LocalDate d = LocalDate.parse(date);
             
@@ -139,7 +140,6 @@ public class CarController {
         String field = fieldError != null ? fieldError.getField() : "unknown";
         String message = fieldError != null ? fieldError.getDefaultMessage() : "Validation failed";
         
-        // Create specific error messages based on field
         String errorMessage = switch (field) {
             case "claimDate" -> "Invalid claim date";
             case "description" -> "Invalid description";
