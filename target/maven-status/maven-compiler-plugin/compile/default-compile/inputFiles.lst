@@ -11,11 +11,15 @@
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/InsurancePolicyRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/repo/OwnerRepository.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/service/CarService.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/service/InsurancePolicyService.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/service/PolicyExpirationScheduler.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/service/ValidationService.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/CarController.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/InsurancePolicyController.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/CarDto.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/ClaimDto.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/ClaimRequest.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/ErrorResponse.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/HistoryDto.java
 /Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/InsurancePolicyDto.java
+/Users/alex/Documents/Acasa/java/task/src/main/java/com/example/carins/web/dto/InsuranceValidityResponse.java

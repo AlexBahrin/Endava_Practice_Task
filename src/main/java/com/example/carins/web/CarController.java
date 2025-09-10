@@ -4,10 +4,13 @@ import com.example.carins.model.Car;
 import com.example.carins.model.Claim;
 import com.example.carins.model.History;
 import com.example.carins.service.CarService;
+import com.example.carins.service.ValidationService;
 import com.example.carins.web.dto.CarDto;
 import com.example.carins.web.dto.ClaimDto;
+import com.example.carins.web.dto.ClaimRequest;
 import com.example.carins.web.dto.ErrorResponse;
 import com.example.carins.web.dto.HistoryDto;
+import com.example.carins.web.dto.InsuranceValidityResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,16 +41,18 @@ import java.util.List;
 @Tag(name = "Car Insurance", description = "Car insurance management operations")
 public class CarController {
 
-    private final CarService service;
+    private final CarService carService;
+    private final ValidationService validationService;
 
-    public CarController(CarService service) {
-        this.service = service;
+    public CarController(CarService carService, ValidationService validationService) {
+        this.carService = carService;
+        this.validationService = validationService;
     }
 
     @Operation(summary = "Get all cars")
     @GetMapping("/cars")
     public List<CarDto> getCars() {
-        return service.listCars().stream().map(this::toDto).toList();
+        return carService.listCars().stream().map(this::toDto).toList();
     }
 
     @Operation(summary = "Check insurance validity")
@@ -64,25 +69,17 @@ public class CarController {
             @Parameter(description = "Date (YYYY-MM-DD)") @RequestParam String date) 
     {
         try {
-            LocalDate d = LocalDate.parse(date);
-            
-            LocalDate now = LocalDate.now();
-            LocalDate minDate = now.minusYears(2);
-            LocalDate maxDate = now.plusYears(2);
-            
-            if (d.isBefore(minDate) || d.isAfter(maxDate)) {
-                ErrorResponse error = new ErrorResponse("Date out of range", 400);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-            }
-            
-            boolean valid = service.isInsuranceValid(carId, d);
-            return ResponseEntity.ok(new InsuranceValidityResponse(carId, d.toString(), valid));
+            LocalDate parsedDate = validationService.validateAndParseDate(date);
+            boolean valid = carService.isInsuranceValid(carId, parsedDate);
+            return ResponseEntity.ok(new InsuranceValidityResponse(carId, parsedDate.toString(), valid));
         } catch (DateTimeParseException e) {
             ErrorResponse error = new ErrorResponse("", 400);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         } catch (IllegalArgumentException e) {
-            ErrorResponse error = new ErrorResponse("Car not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+            String message = e.getMessage().contains("Date out of range") ? "Date out of range" : "Car not found";
+            int status = e.getMessage().contains("Date out of range") ? 400 : 404;
+            ErrorResponse error = new ErrorResponse(message, status);
+            return ResponseEntity.status(HttpStatus.valueOf(status)).body(error);
         }
     }
 
@@ -100,7 +97,7 @@ public class CarController {
             @Parameter(description = "Car ID") @PathVariable Long carId, 
             @Valid @RequestBody ClaimRequest request) {
         try {
-            Claim claim = service.registerClaim(carId, request.claimDate(), request.description(), request.amount());
+            Claim claim = carService.registerClaim(carId, request.claimDate(), request.description(), request.amount());
             ClaimDto claimDto = toClaimDto(claim);
             
             URI location = ServletUriComponentsBuilder
@@ -125,7 +122,7 @@ public class CarController {
     @GetMapping("/cars/{carId}/history")
     public ResponseEntity<?> getCarHistory(@Parameter(description = "Car ID") @PathVariable Long carId) {
         try {
-            List<History> history = service.getCarHistory(carId);
+            List<History> history = carService.getCarHistory(carId);
             List<HistoryDto> historyDtos = history.stream().map(this::toHistoryDto).toList();
             return ResponseEntity.ok(historyDtos);
         } catch (IllegalArgumentException e) {
@@ -177,23 +174,4 @@ public class CarController {
             history.getDate()
         );
     }
-
-    public record InsuranceValidityResponse(Long carId, String date, boolean valid) {}
-
-    @Schema(description = "Request body for registering a claim")
-    public record ClaimRequest(
-        @Schema(description = "Date of the claim", example = "2025-09-09")
-        @NotNull(message = "Claim date is required")
-        LocalDate claimDate,
-        
-        @Schema(description = "Description of the claim", example = "Minor collision damage")
-        @NotBlank(message = "Description is required")
-        @Size(min = 5, max = 500, message = "Description must be between 5 and 500 characters")
-        String description,
-        
-        @Schema(description = "Claim amount", example = "1500")
-        @NotNull(message = "Amount is required")
-        @Min(value = 1, message = "Amount must be greater than 0")
-        Integer amount
-    ) {}
 }
